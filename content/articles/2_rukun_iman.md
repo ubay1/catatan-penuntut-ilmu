@@ -1,7 +1,7 @@
 ---
 title: Mengenal Rukun Iman
 description: Beriman kepada Allah, yaitu (1) beriman kepada wujud, (2) beriman kepada sifat dan perbuatan Allah, (3) beriman kepada uluhiyyah (Allah satu-satunya yang berhak diibadahi). Allah yang memiliki setiap sifat kesempurnaan yang sesuai dengan Dzat Allah Yang Mahatinggi dan tidak pantas disandarkan kepada Allah berbagai kekurangan.
-tags: [islam]
+tags: [islam, iman]
 image: https://muhammadiyah.or.id/wp-content/uploads/2022/02/WhatsApp-Image-2022-02-16-at-14.20.44.jpeg
 published: 2022-05-01 21:00
 ---
