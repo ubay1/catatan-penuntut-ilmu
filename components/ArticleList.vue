@@ -14,20 +14,20 @@
             v-if="article.image"
             :src="article.image"
             alt=""
-            class="w-full h-72 object-cover rounded-md"
+            class="w-full h-72 <md:h-60 object-cover rounded-md"
           />
           <img
             v-else
             src="https://www.dinkessbd.com/assets/img/berita/no_image.png"
             alt=""
-            class="w-full h-72 object-cover rounded-md"
+            class="w-full h-72 <md:h-60 object-cover rounded-md"
           />
           <div>
-            <h2 class="font-bold text-gray-900 text-2xl mb-2">
+            <h2 class="font-bold text-gray-900 text-xl mb-2 mt-2">
               {{ article.title }}
             </h2>
             <p class="text-md line-clamp-8">{{ article.description }}</p>
-            <p class="font-bold text-blue-800 mt-1">Selengkapnya ..</p>
+            <p class="font-bold text-sm text-blue-800 mt-1">Selengkapnya ..</p>
           </div>
         </nuxt-link>
       </li>

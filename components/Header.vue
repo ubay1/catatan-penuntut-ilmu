@@ -13,7 +13,7 @@
           </nuxt-link>
         </h1>
         <div class="flex justify-center items-center">
-          <button class="w-8" type="button" data-modal-toggle="defaultModal">
+          <button class="w-8" type="button" @click="openModalSearch">
             <i class="mdi mdi-magnify mdi-24px" />
           </button>
         </div>
@@ -108,7 +108,7 @@ export default {
     },
 
     openModalSearch() {
-      console.log('test')
+      this.$emit('openModalSearch')
     },
 
     async searchArticle() {

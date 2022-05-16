@@ -1,73 +1,83 @@
 <template>
   <div
-    id="defaultModal"
-    tabindex="-1"
-    aria-hidden="true"
-    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full"
-    :class="[isModalOpen ? 'block' : 'hidden']"
+    v-if="isModalOpen"
+    class="absolute overflow-y-auto bg-white top-0 z-50 w-full h-full min-h-screen"
   >
-    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-      <!-- Modal content -->
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <!-- Modal header -->
-        <div
-          class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"
+    <div class="fixed w-full h-28 shadow-md border-b border-gray-200 bg-white">
+      <button
+        class="absolute right-2 top-2 h-6 w-6 rounded-full flex justify-center items-center bg-gray-800 text-white"
+        @click="closeModalSearch"
+      >
+        <i class="mdi mdi-close mdi-18px" />
+      </button>
+
+      <div class="p-4 my-2 absolute w-full top-5">
+        <form
+          class="relative flex justify-center items-center w-full"
+          action="post"
+          @submit.prevent="onSubmit"
         >
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-            Terms of Service
-          </h3>
+          <input
+            id="input-search-article"
+            v-model="searchQuery"
+            type="text"
+            class="border border-gray-300 shadow-sm focus:border-gray-100 focus:outline-none focus:shadow-md rounded-md px-2 w-full h-10 placeholder-gray-300"
+            name="input-search-article"
+            placeholder="cari artikel"
+          />
           <button
+            class="absolute w-7 h-7 right-2 rounded-full"
             type="button"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            data-modal-toggle="defaultModal"
+            @click="onSubmit"
           >
-            <svg
-              class="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
+            <i class="mdi mdi-magnify mdi-18px" />
           </button>
-        </div>
-        <!-- Modal body -->
-        <div class="p-6 space-y-6">
-          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            With less than a month to go before the European Union enacts new
-            consumer privacy laws for its citizens, companies around the world
-            are updating their terms of service agreements to comply.
-          </p>
-          <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            The European Union’s General Data Protection Regulation (G.D.P.R.)
-            goes into effect on May 25 and is meant to ensure a common set of
-            data rights in the European Union. It requires organizations to
-            notify users as soon as possible of high-risk data breaches that
-            could personally affect them.
-          </p>
-        </div>
-        <!-- Modal footer -->
-        <div
-          class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"
-        >
-          <button
-            data-modal-toggle="defaultModal"
-            type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        </form>
+      </div>
+    </div>
+
+    <!-- list article -->
+    <div v-if="isLoadingArticle">
+      <img
+        class="w-8 h-8 m-auto mt-32"
+        src="@/static/asset/loading.gif"
+        alt="loading article .."
+      />
+    </div>
+    <div v-else>
+      <div v-if="listData.length === 0" class="text-center mt-32 text-gray-400">
+        <img
+          class="w-52 m-auto"
+          src="https://cdn.dribbble.com/users/107759/screenshots/4588830/article-not-found.gif"
+          alt="article-empty"
+        />
+        <p class="mt-4 text-gray-300">cari artikel yang ingin kamu baca</p>
+      </div>
+      <div v-else class="mt-32 m-4">
+        <div v-for="(article, idx) in listData" :key="`list-article-${idx}`">
+          <div
+            class="mb-4 cursor-pointer shadow-md border border-gray-100 rounded-md flex <sm:flex-col"
+            @click="gotoDetailArticle(article)"
           >
-            I accept
-          </button>
-          <button
-            data-modal-toggle="defaultModal"
-            type="button"
-            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-          >
-            Decline
-          </button>
+            <!-- <div
+            class="mb-4 shadow-md border border-gray-100 rounded-md flex <sm:flex-col"
+          > -->
+            <div class="w-2/5 h-32 <sm:w-full <sm:h-40">
+              <img
+                class="w-full h-full object-cover rounded-tl-md rounded-bl-md <sm:rounded-tr-md <sm:rounded-bl-none"
+                :src="article.image"
+                alt="image-search-article"
+              />
+            </div>
+            <div class="p-2 w-3/5 <sm:w-full">
+              <h3 class="text-md font-bold">
+                {{ article.title }}
+              </h3>
+              <p class="text-sm w-full line-clamp-4 <sm:line-clamp-3">
+                {{ article.description }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -75,20 +85,56 @@
 </template>
 
 <script>
+import { getSearchArticle } from '~/utils/getContent'
+
 export default {
   props: {
     isModalOpen: {
       type: Boolean,
+      required: true,
       default: false,
     },
   },
   data() {
-    return {}
+    return {
+      isLoadingArticle: false,
+      searchQuery: null,
+      listData: [],
+    }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    closeModalSearch() {
+      this.searchQuery = null
+      this.listData = []
+      this.$emit('closeModalSearch')
+    },
+    async onSubmit() {
+      this.isLoadingArticle = true
+      try {
+        const data = {
+          $content: this.$content,
+          errors: this.$nuxt.error,
+          q: this.searchQuery,
+        }
+
+        const { listArticles } = await getSearchArticle(data)
+
+        this.listData = listArticles
+        this.isLoadingArticle = false
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('error get article', error)
+      }
+    },
+    gotoDetailArticle(article) {
+      this.searchQuery = null
+      this.listData = []
+      this.$emit('gotoDetailArticle', article)
+    },
+  },
 }
 </script>

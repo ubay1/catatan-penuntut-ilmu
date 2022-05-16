@@ -4,7 +4,7 @@
       <div v-for="tag in tags" :key="tag" class="">
         <nuxt-link
           :to="{ name: 'tags-tag', params: { tag: tag.toLowerCase() } }"
-          class="text-sm bg-gray-900 text-white p-1 rounded lowercase hover:bg-gray-600"
+          class="text-xs bg-gray-900 text-white p-1 rounded lowercase hover:bg-gray-600"
           >{{ tag }}</nuxt-link
         >
       </div>

@@ -16,6 +16,9 @@ export default defineConfig({
       gridTemplateColumns: {
         '2-custom': '30% 70%',
       },
+      gridTemplateRows: {
+        '2-custom': '30% 70%',
+      },
     },
   },
   plugins: [
