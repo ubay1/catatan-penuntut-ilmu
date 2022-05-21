@@ -67,6 +67,7 @@ export default {
       title: this.article.title,
       meta: [
         ...this.meta,
+        { hid: 'description', name: 'description', content: 'Detail Article' },
         {
           property: 'article:published_time',
           content: this.article.createdAt,

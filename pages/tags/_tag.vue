@@ -35,6 +35,7 @@ export default {
   head() {
     return {
       title: `Articles Tagged - ${this.capitalise(this.$route.params.tag)}`,
+      meta: [{ hid: 'description', name: 'description', content: 'Tags' }],
       link: [
         {
           hid: 'canonical',
